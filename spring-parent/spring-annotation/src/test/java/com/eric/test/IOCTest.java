@@ -1,24 +1,23 @@
-package com.eric;
+package com.eric.test;
 
-import com.eric.bean.Person;
 import com.eric.config.BeanConfig;
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
- * Description: spring_parent
+ * Description: spring-parent
  *
  * @author zhangxiusen
  * @date 2021-1-18
  */
-public class MainTest {
+public class IOCTest {
 
-	public static void main(String[] args) {
+	@Test
+	public void test(){
 		ApplicationContext ac = new AnnotationConfigApplicationContext(BeanConfig.class);
-		Person person = ac.getBean(Person.class);
-		System.out.println(person.toString());
-		String[] names = ac.getBeanNamesForType(Person.class);
-		for (String name : names){
+		String[] beanNames = ac.getBeanDefinitionNames();
+		for (String name : beanNames){
 			System.out.println(name);
 		}
 	}
