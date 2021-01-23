@@ -3,6 +3,7 @@ package com.eric.bean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Description: spring_parent
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Person {
 
+	@Value("${person.name}")
 	private String name;
 
 	private Integer age;
