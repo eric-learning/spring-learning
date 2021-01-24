@@ -1,10 +1,18 @@
 package com.eric.test;
 
+import com.eric.bean.Boss;
+import com.eric.bean.Car;
+import com.eric.bean.Color;
+import com.eric.bean.Red;
 import com.eric.config.BeanConfig;
 import com.eric.config.BeanConfig2;
+import com.eric.config.BeanConfigOfAutowired;
+import com.eric.service.BookService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.Calendar;
 
 /**
  * Description: spring-parent
@@ -56,5 +64,22 @@ public class IOCTest {
 		System.out.println("bean2的类型："+bean2.getClass());
 		Object bean3 = ac.getBean("&colorFactoryBean");
 		System.out.println("bean3的类型："+bean3.getClass());
+	}
+
+	@Test
+	public void testAutowired(){
+		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(BeanConfigOfAutowired.class);
+		BookService bookService = ac.getBean(BookService.class);
+		System.out.println(bookService);
+
+		Boss boss = ac.getBean(Boss.class);
+		System.out.println(boss);
+		Car car = ac.getBean(Car.class);
+		System.out.println(car);
+
+		Color color = ac.getBean(Color.class);
+		System.out.println(color);
+		System.out.println(ac);
+		ac.close();
 	}
 }

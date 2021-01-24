@@ -10,4 +10,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class BookDao {
+
+    private String flag = "1";
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 }
