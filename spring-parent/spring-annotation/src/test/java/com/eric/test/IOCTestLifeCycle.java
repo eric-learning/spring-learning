@@ -14,7 +14,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class IOCTestLifeCycle {
 
     @Test
-    public void test01(){
+    public void test01() {
         AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(BeanConfigOfLifeCycle.class);
         System.out.println("容器创建完成---");
         ac.getBean(Car.class);
