@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 
 /**
  * Description: spring_parent
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Service;
 // }, useDefaultFilters = false)
 // 可以使用多个@ComponentScan注解，得益于@ComponentScan中的 @Repeatable(ComponentScans.class)
 @ComponentScan(value = "com.eric", includeFilters = {
-		@ComponentScan.Filter(type = FilterType.ANNOTATION, classes = {Service.class})
+		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {BookController.class})
 }, useDefaultFilters = false)
 @ComponentScan(value = "com.eric", includeFilters = {
 		// 自定义过滤规则
