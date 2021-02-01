@@ -15,7 +15,7 @@ import javax.sql.DataSource;
  * Description: spring-parent
  *
  * @author zhangxiusen
- * @Profile：指定组件在哪个环境的情况下才能被注册到容器中，不指定则在任何环境下都能注册这个组件 1、加了环境标识的bean，只有这个环境被激活的时候才能注册到容器中。默认是default环境
+ * 1、`@Profile`：指定组件在哪个环境的情况下才能被注册到容器中，不指定则在任何环境下都能注册这个组件 1、加了环境标识的bean，只有这个环境被激活的时候才能注册到容器中。默认是default环境
  * 2、@Profile加在类上，当是指定环境的时候，整个配置类里面的所有配置就会生效
  * 3、没有环境标注的bean在任何环境下都会加载
  * @date 2021/1/24

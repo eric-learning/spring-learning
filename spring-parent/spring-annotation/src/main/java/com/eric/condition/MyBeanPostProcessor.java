@@ -2,6 +2,7 @@ package com.eric.condition;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.PriorityOrdered;
 
 /**
  * Description: spring-parent
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  * @author zhangxiusen
  * @date 2021/1/23
  */
-public class MyBeanPostProcessor implements BeanPostProcessor {
+public class MyBeanPostProcessor implements BeanPostProcessor, PriorityOrdered {
 
     /**
      * 在所有其他初始化操作（Bean指定、实现、JSR250）之前执行处理
@@ -36,5 +37,10 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         System.out.println("postProcessAfterInitialization---"+beanName+"---");
         return bean;
+    }
+
+    @Override
+    public int getOrder() {
+        return 0;
     }
 }
