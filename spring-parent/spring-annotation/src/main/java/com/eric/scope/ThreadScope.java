@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Description: 自定义Scope实现，线程级别的bean作用域
  *
- * @author zhangxiusen
+ * @author Eric.Zhang
  * @date 2021-1-19
  */
 public class ThreadScope implements Scope {

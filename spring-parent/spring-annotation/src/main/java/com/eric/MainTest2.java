@@ -8,7 +8,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 /**
  * Description: spring_parent
  *
- * @author zhangxiusen
+ * @author Eric.Zhang
  * @date 2021-1-19
  */
 public class MainTest2 {

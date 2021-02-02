@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Primary;
  *      把Spring底层一些组件注入到自定义的Bean中；
  *      XXXAware：功能使用XXXPostProcessor,
  *          ApplicationContextAware ==> ApplicationContextAwareProcessor
- * @author zhangxiusen
+ * @author Eric.Zhang
  * @date 2021/1/24
  */
 @Configuration

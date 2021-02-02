@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * Description: spring-parent
  * 默认加在IOC容器中的组件，Spring容器在启动时会调用对象的无参构造器创建对象，再进行初始化赋值等操作
- * @author zhangxiusen
+ * @author Eric.Zhang
  * @date 2021/1/24
  */
 @Component

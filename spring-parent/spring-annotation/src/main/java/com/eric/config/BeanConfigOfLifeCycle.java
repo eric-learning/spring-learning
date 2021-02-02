@@ -47,7 +47,7 @@ import org.springframework.context.annotation.Import;
  *
  * Spring底层对BeanPostProcessor的使用：
  *      bean赋值，注入其他组件，@Autowired，生命周期注解功能，@Async，---BeanPostProcessor
- * @author zhangxiusen
+ * @author Eric.Zhang
  * @date 2021/1/23
  */
 @ComponentScan("com.eric.bean")

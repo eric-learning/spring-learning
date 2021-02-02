@@ -6,7 +6,7 @@ import org.springframework.core.type.AnnotationMetadata;
 /**
  * Description: spring-parent
  *
- * @author zhangxiusen
+ * @author Eric.Zhang
  * @date 2021/1/23
  */
 public class MyImportSelector implements ImportSelector {

@@ -6,7 +6,7 @@ import org.springframework.lang.Nullable;
 /**
  * Description: 作用域接口
  *
- * @author zhangxiusen
+ * @author Eric.Zhang
  * @date 2021-1-19
  */
 public interface Scope {

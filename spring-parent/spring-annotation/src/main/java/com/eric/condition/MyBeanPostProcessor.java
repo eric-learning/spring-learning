@@ -8,7 +8,7 @@ import org.springframework.core.PriorityOrdered;
  * Description: spring-parent
  * 后置处理器，初始化前后进行处理工作
  * 将后置处理器加入到容器中
- * @author zhangxiusen
+ * @author Eric.Zhang
  * @date 2021/1/23
  */
 public class MyBeanPostProcessor implements BeanPostProcessor, PriorityOrdered {

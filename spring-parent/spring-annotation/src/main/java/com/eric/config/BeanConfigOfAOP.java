@@ -49,7 +49,7 @@ import javax.security.auth.login.CredentialException;
  *                              implements SmartInstantiationAwareBeanPostProcessor, BeanFactoryAware
  *                          关注bean后置处理器（在bean初始化完成前后做的事情）、自动装配BeanFactory
  *
- * @author zhangxiusen
+ * @author Eric.Zhang
  * @date 2021/1/31
  */
 @EnableAspectJAutoProxy
