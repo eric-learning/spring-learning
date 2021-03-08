@@ -282,6 +282,8 @@ public abstract class AbstractQueuedSynchronizer
 
 	/**
 	 * 锁获取方法层--检查和更新未能获取的节点的状态
+	 * 获取锁失败后是否需要挂起
+	 * Park：挂起；Unpark：唤醒
 	 * @param pred
 	 * @param node
 	 * @return
@@ -292,7 +294,9 @@ public abstract class AbstractQueuedSynchronizer
 			return true;
 		if (ws > 0) {
 			do {
+				// 把pred节点去除
 				node.prev = pred = pred.prev;
+				// 正值表示节点已被取消
 			} while (pred.waitStatus > 0);
 			pred.next = node;
 		} else {
@@ -310,6 +314,7 @@ public abstract class AbstractQueuedSynchronizer
 
 	/**
 	 * Convenience method to park and then check if interrupted
+	 * 挂起当前线程且中断
 	 *
 	 * @return {@code true} if interrupted
 	 */
@@ -318,12 +323,19 @@ public abstract class AbstractQueuedSynchronizer
 		return Thread.interrupted();
 	}
 
+	/**
+	 * 锁获取方法层--条件等待方法以及获取
+	 * @param node
+	 * @param arg
+	 * @return
+	 */
 	final boolean acquireQueued(final Node node, int arg) {
 		boolean failed = true;
 		try {
 			boolean interrupted = false;
 			for (;;) {
 				final Node p = node.predecessor();
+				// 当前节点前边没有等待节点且获取锁成功
 				if (p == head && tryAcquire(arg)) {
 					setHead(node);
 					p.next = null; // help GC
@@ -341,6 +353,7 @@ public abstract class AbstractQueuedSynchronizer
 	}
 
 	/**
+	 * 锁获取方法层--独占中断模式获取锁
 	 * Acquires in exclusive interruptible mode.
 	 * @param arg the acquire argument
 	 */
@@ -1222,6 +1235,7 @@ public abstract class AbstractQueuedSynchronizer
 
 	/**
 	 * CAS waitStatus field of a node.
+	 * 用CAS的方式将node节点从expect更新至update状态
 	 */
 	private static final boolean compareAndSetWaitStatus(Node node,
 	                                                     int expect,
