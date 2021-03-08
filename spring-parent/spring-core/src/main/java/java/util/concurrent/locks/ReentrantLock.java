@@ -204,9 +204,11 @@ public class ReentrantLock implements Lock, java.io.Serializable {
          * acquire on failure.
          */
         final void lock() {
+            // 若通过CAS设置变量state（同步状态）成功，也就是获取锁成功，则将当前线程设置为独占线程
             if (compareAndSetState(0, 1))
                 setExclusiveOwnerThread(Thread.currentThread());
             else
+                // 若通过CAS设置变量state（同步状态）失败，也就是获取锁失败，则进入acquire方法进行后续处理
                 acquire(1);
         }
 

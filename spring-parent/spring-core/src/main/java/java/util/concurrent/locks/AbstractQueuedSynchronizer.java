@@ -138,7 +138,7 @@ public abstract class AbstractQueuedSynchronizer
 	static final long spinForTimeoutThreshold = 1000L;
 
 	/**
-	 * 给双向链表在尾部添加Node
+	 * 排队方法层--给双向链表在尾部添加Node
 	 * @param node
 	 * @return
 	 */
@@ -222,6 +222,11 @@ public abstract class AbstractQueuedSynchronizer
 		}
 	}
 
+	/**
+	 * 排队方法层--设置队列的头部
+	 * @param node
+	 * @param propagate
+	 */
 	private void setHeadAndPropagate(Node node, int propagate) {
 		Node h = head; // Record old head for check below
 		setHead(node);
@@ -233,6 +238,10 @@ public abstract class AbstractQueuedSynchronizer
 		}
 	}
 
+	/**
+	 * 锁获取方法层--取消acquire操作
+	 * @param node
+	 */
 	private void cancelAcquire(Node node) {
 		// Ignore if node doesn't exist
 		if (node == null)
@@ -271,6 +280,12 @@ public abstract class AbstractQueuedSynchronizer
 		}
 	}
 
+	/**
+	 * 锁获取方法层--检查和更新未能获取的节点的状态
+	 * @param pred
+	 * @param node
+	 * @return
+	 */
 	private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
 		int ws = pred.waitStatus;
 		if (ws == Node.SIGNAL)
@@ -287,7 +302,7 @@ public abstract class AbstractQueuedSynchronizer
 	}
 
 	/**
-	 * Convenience method to interrupt current thread.
+	 * 锁获取方法层--中断当前线程方法
 	 */
 	static void selfInterrupt() {
 		Thread.currentThread().interrupt();
@@ -352,6 +367,13 @@ public abstract class AbstractQueuedSynchronizer
 		}
 	}
 
+	/**
+	 * 锁获取方法层--独占时间模式获取锁
+	 * @param arg
+	 * @param nanosTimeout
+	 * @return
+	 * @throws InterruptedException
+	 */
 	private boolean doAcquireNanos(int arg, long nanosTimeout)
 			throws InterruptedException {
 		if (nanosTimeout <= 0L)
@@ -383,6 +405,10 @@ public abstract class AbstractQueuedSynchronizer
 		}
 	}
 
+	/**
+	 * 锁获取方法层--共享时间模式获取锁
+	 * @param arg
+	 */
 	private void doAcquireShared(int arg) {
 		final Node node = addWaiter(Node.SHARED);
 		boolean failed = true;
@@ -411,6 +437,11 @@ public abstract class AbstractQueuedSynchronizer
 		}
 	}
 
+	/**
+	 * 锁获取方法层--共享中断模式获取锁
+	 * @param arg
+	 * @throws InterruptedException
+	 */
 	private void doAcquireSharedInterruptibly(int arg)
 			throws InterruptedException {
 		final Node node = addWaiter(Node.SHARED);
@@ -437,6 +468,13 @@ public abstract class AbstractQueuedSynchronizer
 		}
 	}
 
+	/**
+	 * 锁获取方法层--共享时间模式获取锁
+	 * @param arg
+	 * @param nanosTimeout
+	 * @return
+	 * @throws InterruptedException
+	 */
 	private boolean doAcquireSharedNanos(int arg, long nanosTimeout)
 			throws InterruptedException {
 		if (nanosTimeout <= 0L)
@@ -471,18 +509,38 @@ public abstract class AbstractQueuedSynchronizer
 		}
 	}
 
+	/**
+	 * API层--独占模式获取锁
+	 * @param arg
+	 * @return
+	 */
 	protected boolean tryAcquire(int arg) {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * API层--独占模式释放锁
+	 * @param arg
+	 * @return
+	 */
 	protected boolean tryRelease(int arg) {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * API层--共享模式获取锁
+	 * @param arg
+	 * @return
+	 */
 	protected int tryAcquireShared(int arg) {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * API层--共享模式释放锁
+	 * @param arg
+	 * @return
+	 */
 	protected boolean tryReleaseShared(int arg) {
 		throw new UnsupportedOperationException();
 	}
@@ -491,12 +549,21 @@ public abstract class AbstractQueuedSynchronizer
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * API层--独占模式忽略中断
+	 * @param arg
+	 */
 	public final void acquire(int arg) {
 		if (!tryAcquire(arg) &&
 				acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
 			selfInterrupt();
 	}
 
+	/**
+	 * API层--独占模式中断即终止
+	 * @param arg
+	 * @throws InterruptedException
+	 */
 	public final void acquireInterruptibly(int arg)
 			throws InterruptedException {
 		if (Thread.interrupted())
@@ -505,6 +572,13 @@ public abstract class AbstractQueuedSynchronizer
 			doAcquireInterruptibly(arg);
 	}
 
+	/**
+	 * API层--独占模式忽略中断
+	 * @param arg
+	 * @param nanosTimeout
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public final boolean tryAcquireNanos(int arg, long nanosTimeout)
 			throws InterruptedException {
 		if (Thread.interrupted())
@@ -513,6 +587,11 @@ public abstract class AbstractQueuedSynchronizer
 				doAcquireNanos(arg, nanosTimeout);
 	}
 
+	/**
+	 * API层--独占模式释放锁
+	 * @param arg
+	 * @return
+	 */
 	public final boolean release(int arg) {
 		if (tryRelease(arg)) {
 			Node h = head;
@@ -523,11 +602,20 @@ public abstract class AbstractQueuedSynchronizer
 		return false;
 	}
 
+	/**
+	 * API层--共享模式获取锁
+	 * @param arg
+	 */
 	public final void acquireShared(int arg) {
 		if (tryAcquireShared(arg) < 0)
 			doAcquireShared(arg);
 	}
 
+	/**
+	 * API层--共享模式中断即终止
+	 * @param arg
+	 * @throws InterruptedException
+	 */
 	public final void acquireSharedInterruptibly(int arg)
 			throws InterruptedException {
 		if (Thread.interrupted())
@@ -536,6 +624,13 @@ public abstract class AbstractQueuedSynchronizer
 			doAcquireSharedInterruptibly(arg);
 	}
 
+	/**
+	 * API层--共享模式获取忽略中断
+	 * @param arg
+	 * @param nanosTimeout
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public final boolean tryAcquireSharedNanos(int arg, long nanosTimeout)
 			throws InterruptedException {
 		if (Thread.interrupted())
@@ -544,6 +639,11 @@ public abstract class AbstractQueuedSynchronizer
 				doAcquireSharedNanos(arg, nanosTimeout);
 	}
 
+	/**
+	 * API层--共享模式释放
+	 * @param arg
+	 * @return
+	 */
 	public final boolean releaseShared(int arg) {
 		if (tryReleaseShared(arg)) {
 			doReleaseShared();
@@ -552,14 +652,26 @@ public abstract class AbstractQueuedSynchronizer
 		return false;
 	}
 
+	/**
+	 * 队列方法层--查询是否有线程正在等待获取
+	 * @return
+	 */
 	public final boolean hasQueuedThreads() {
 		return head != tail;
 	}
 
+	/**
+	 * 队列方法层--查询是否有线程争用过此同步器
+	 * @return
+	 */
 	public final boolean hasContended() {
 		return head != null;
 	}
 
+	/**
+	 * 队列方法层--返回队列中的第一个线程
+	 * @return
+	 */
 	public final Thread getFirstQueuedThread() {
 		// handle only fast path, else relay
 		return (head == tail) ? null : fullGetFirstQueuedThread();
@@ -598,6 +710,10 @@ public abstract class AbstractQueuedSynchronizer
 		return false;
 	}
 
+	/**
+	 * 队列方法层--判断第一个节点是否为独占模式
+	 * @return
+	 */
 	final boolean apparentlyFirstQueuedIsExclusive() {
 		Node h, s;
 		return (h = head) != null &&
@@ -606,6 +722,10 @@ public abstract class AbstractQueuedSynchronizer
 				s.thread != null;
 	}
 
+	/**
+	 * 队列方法层--查询是否有线程在等待队列等待
+	 * @return
+	 */
 	public final boolean hasQueuedPredecessors() {
 		// The correctness of this depends on head being initialized
 		// before tail and on head.next being accurate if the current
