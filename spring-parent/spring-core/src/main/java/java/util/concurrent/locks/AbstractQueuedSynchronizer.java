@@ -1,38 +1,3 @@
-/*
- * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
-
-/*
- *
- *
- *
- *
- *
- * Written by Doug Lea with assistance from members of JCP JSR-166
- * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/publicdomain/zero/1.0/
- */
-
 package java.util.concurrent.locks;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
@@ -43,6 +8,7 @@ import sun.misc.Unsafe;
  * 抽象的队列式同步器
  * AQS是一种提供了原子式管理同步状态、阻塞和唤醒线程功能以及队列模型的简单框架。
  * Java中的大部分同步类(Lock/Semaphore/ReentrantLock等)都是基于AbstractQueuedSynchronizer实现的
+ * 读《书》而知先贤治政之本，知朝代兴废之由，知个人修身只要
  *
  * @since 1.5
  * @author Doug Lea
