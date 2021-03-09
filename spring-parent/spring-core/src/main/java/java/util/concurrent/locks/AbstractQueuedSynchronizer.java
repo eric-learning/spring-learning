@@ -86,7 +86,7 @@ public abstract class AbstractQueuedSynchronizer
 	private transient volatile Node head;
 
 	private transient volatile Node tail;
-
+	/** 同步状态 */
 	private volatile int state;
 
 	protected final int getState() {
@@ -112,9 +112,11 @@ public abstract class AbstractQueuedSynchronizer
 		for (;;) {
 			Node t = tail;
 			if (t == null) { // Must initialize
+				// 队列为空，初始化一个虚节点
 				if (compareAndSetHead(new Node()))
 					tail = head;
 			} else {
+				// 将node节点添加到tail前边
 				node.prev = t;
 				if (compareAndSetTail(t, node)) {
 					t.next = node;
@@ -126,6 +128,13 @@ public abstract class AbstractQueuedSynchronizer
 
 	/**
 	 * 将当前线程加入到等待队列的队尾，并返回当前线程所在的结点
+	 * <ul>
+	 *     <li>通过当前线程和锁模式新建一个节点</li>
+	 *     <li>pred指针指向尾结点tail</li>
+	 *     <li>将New中的prev指针指向pred</li>
+	 *     <li>通过compareAndSetTail方法完成尾结点的设置</li>
+	 *     <li>如果pred指针是null（说明等待队列中没有元素），或者当前pred指针和tail指向的位置不同（说明被别的线程已经修改），就需要enq方法初始化</li>
+	 * </ul>
 	 * @param mode
 	 * @return
 	 */
@@ -291,6 +300,8 @@ public abstract class AbstractQueuedSynchronizer
 
 	/**
 	 * 锁获取方法层--条件等待方法以及获取
+	 * 将节点放入队列中，如果在队首且一次性获取锁成功则返回false（未被中断）；
+	 * 如果多次自旋后获取锁成功返回true（被中断）；获取失败、异常取消获取
 	 * @param node
 	 * @param arg
 	 * @return
@@ -530,6 +541,7 @@ public abstract class AbstractQueuedSynchronizer
 
 	/**
 	 * API层--独占模式忽略中断
+	 * tryAcquire如果该方法返回true，则说明当前线程获取锁成功，就不用往后执行了；如果获取失败，就需要加入到等待队列中
 	 * @param arg
 	 */
 	public final void acquire(int arg) {
@@ -703,12 +715,20 @@ public abstract class AbstractQueuedSynchronizer
 
 	/**
 	 * 队列方法层--查询是否有线程在等待队列等待
+	 * 公平锁加锁时判断判断等待队列中是否含有有效节点的方法。
+	 * 如果返回false，说明当前线程可以争取资源；
+	 * 如果返回true，说明队列中存在有效节点，当前线程需要加入到队列中等待
 	 * @return
 	 */
 	public final boolean hasQueuedPredecessors() {
-		// The correctness of this depends on head being initialized
-		// before tail and on head.next being accurate if the current
-		// thread is first in queue.
+		// 双向链表中，第一个节点为虚节点，其实并不存储任何信息，只是占位。真正的第一个有数据的节点，是在第二个节点开始的。
+		// 当h != t时：如果(s = h.next) == null，等待队列正在有线程进行初始化，但只是进行到了Tail指向Head，
+		// 没有将Head指向Tail，此时队列中有元素，需要返回True（这块具体见下边代码分析）。
+		// 如果(s = h.next) != null，说明此时队列中至少有一个有效节点。
+		// 如果此时s.thread == Thread.currentThread()，说明等待队列的第一个有效节点中的线程与当前线程相同，
+		// 那么当前线程是可以获取资源的；
+		// 如果s.thread != Thread.currentThread()，说明等待队列的第一个有效节点线程与当前线程不同，
+		// 当前线程必须加入进等待队列。
 		Node t = tail; // Read fields in reverse initialization order
 		Node h = head;
 		Node s;

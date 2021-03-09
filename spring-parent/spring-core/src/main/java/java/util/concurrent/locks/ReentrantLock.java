@@ -177,6 +177,11 @@ public class ReentrantLock implements Lock, java.io.Serializable {
                 acquire(1);
         }
 
+        /**
+         * 尝试获取资源，成功则返回true，失败返回false
+         * @param acquires  获取锁的次数
+         * @return
+         */
         protected final boolean tryAcquire(int acquires) {
             return nonfairTryAcquire(acquires);
         }
