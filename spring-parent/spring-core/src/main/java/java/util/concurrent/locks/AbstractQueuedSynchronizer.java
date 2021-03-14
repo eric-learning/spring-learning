@@ -10,6 +10,8 @@ import sun.misc.Unsafe;
  * Java中的大部分同步类(Lock/Semaphore/ReentrantLock等)都是基于AbstractQueuedSynchronizer实现的
  * 读《书》而知先贤治政之本，知朝代兴废之由，知个人修身只要
  *
+ * 冀州、兖州、青州、徐州、扬州、荆州、豫州、梁州、雍州
+ *
  * @since 1.5
  * @author Doug Lea
  */
